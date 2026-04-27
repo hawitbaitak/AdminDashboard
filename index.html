@@ -6,169 +6,34 @@
     <title>لوحة تحكم الإدارة</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
     <style>
-        :root {
-            --navy: #1B2A47;
-            --white: #FFFFFF;
-            --brown: #A05A2C;
-            --light-bg: #F4F7F6;
-            --border-color: #E0E0E0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light-bg);
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        .navbar {
-            background-color: var(--navy);
-            color: var(--white);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar img {
-            height: 40px;
-        }
-
-        .container {
-            padding: 20px 30px;
-            max-width: 1400px;
-            margin: auto;
-        }
-
-        .controls-section {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            align-items: flex-end;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .control-group label {
-            margin-bottom: 5px;
-            font-weight: bold;
-            font-size: 14px;
-            color: var(--navy);
-        }
-
-        .control-group input, .control-group select {
-            padding: 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-family: inherit;
-        }
-
-        .btn {
-            background-color: var(--brown);
-            color: var(--white);
-            border: none;
-            padding: 9px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
+        /* (نفس تنسيقات الـ CSS من الكود السابق بدون تغيير) */
+        :root { --navy: #1B2A47; --white: #FFFFFF; --brown: #A05A2C; --light-bg: #F4F7F6; --border-color: #E0E0E0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--light-bg); margin: 0; color: #333; }
+        .navbar { background-color: var(--navy); color: var(--white); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar img { height: 40px; }
+        .container { padding: 20px 30px; max-width: 1400px; margin: auto; }
+        .controls-section { background: var(--white); padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end; }
+        .control-group { display: flex; flex-direction: column; }
+        .control-group label { margin-bottom: 5px; font-weight: bold; font-size: 14px; color: var(--navy); }
+        .control-group input, .control-group select { padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; }
+        .btn { background-color: var(--brown); color: var(--white); border: none; padding: 9px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .btn:hover { background-color: #8A4B23; }
         .btn-export { background-color: var(--navy); }
         .btn-export:hover { background-color: #121C30; }
-
-        .kpi-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 8px;
-            border-right: 5px solid var(--brown);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .card h3 {
-            margin: 0 0 10px 0;
-            font-size: 16px;
-            color: #666;
-        }
-
-        .card p {
-            margin: 0;
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--navy);
-        }
-
-        .charts-container {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .chart-box {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .table-container {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: right;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-            background-color: var(--navy);
-            color: var(--white);
-        }
-
+        .kpi-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .card { background: var(--white); padding: 20px; border-radius: 8px; border-right: 5px solid var(--brown); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card h3 { margin: 0 0 10px 0; font-size: 16px; color: #666; }
+        .card p { margin: 0; font-size: 24px; font-weight: bold; color: var(--navy); }
+        .charts-container { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .chart-box { background: var(--white); padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .table-container { background: var(--white); padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: right; border-bottom: 1px solid var(--border-color); }
+        th { background-color: var(--navy); color: var(--white); }
         tr:hover { background-color: #f9f9f9; }
-
-        #loading {
-            text-align: center;
-            padding: 50px;
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--brown);
-        }
-
-        @media (max-width: 768px) {
-            .charts-container { grid-template-columns: 1fr; }
-        }
+        #loading { text-align: center; padding: 50px; font-size: 20px; font-weight: bold; color: var(--brown); }
+        @media (max-width: 768px) { .charts-container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -206,47 +71,24 @@
         </div>
 
         <div class="kpi-cards">
-            <div class="card">
-                <h3>إجمالي الطلبات</h3>
-                <p id="kpiTotalOrders">0</p>
-            </div>
-            <div class="card">
-                <h3>إجمالي الإيرادات</h3>
-                <p id="kpiTotalRev">0.00</p>
-            </div>
-            <div class="card">
-                <h3>أعلى منصة مبيعاً</h3>
-                <p id="kpiTopPlatform">-</p>
-            </div>
-            <div class="card">
-                <h3>أفضل موظف</h3>
-                <p id="kpiTopEmp">-</p>
-            </div>
+            <div class="card"><h3>إجمالي الطلبات</h3><p id="kpiTotalOrders">0</p></div>
+            <div class="card"><h3>إجمالي الإيرادات</h3><p id="kpiTotalRev">0.00</p></div>
+            <div class="card"><h3>أعلى منصة مبيعاً</h3><p id="kpiTopPlatform">-</p></div>
+            <div class="card"><h3>أفضل موظف</h3><p id="kpiTopEmp">-</p></div>
         </div>
 
         <div class="charts-container">
-            <div class="chart-box">
-                <canvas id="barChart"></canvas>
-            </div>
-            <div class="chart-box">
-                <canvas id="pieChart"></canvas>
-            </div>
+            <div class="chart-box"><canvas id="barChart"></canvas></div>
+            <div class="chart-box"><canvas id="pieChart"></canvas></div>
         </div>
 
         <div class="table-container">
             <h3>سجل الطلبات</h3>
             <table id="dataTable">
                 <thead>
-                    <tr>
-                        <th>رقم الطلب</th>
-                        <th>اسم الموظف</th>
-                        <th>المنصة</th>
-                        <th>السعر</th>
-                        <th>التاريخ</th>
-                    </tr>
+                    <tr><th>رقم الطلب</th><th>اسم الموظف</th><th>المنصة</th><th>السعر</th><th>التاريخ</th></tr>
                 </thead>
-                <tbody>
-                    </tbody>
+                <tbody></tbody>
             </table>
         </div>
     </div>
@@ -257,19 +99,25 @@
     let filteredData = [];
     let barChartInstance = null;
     let pieChartInstance = null;
+    
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzMNIf6KLI1xt7tYWAWVs8vzfXnfXK7FSxOt-m2RHMmJOfU6mQOmFd-nhPg5F9Ov7G2FQ/exec';
 
-    // Fetch data on load
+    // Fetch data using the external URL API
     window.onload = function() {
-        google.script.run
-            .withSuccessHandler(initDashboard)
-            .getOrdersData();
+        fetch(scriptURL)
+            .then(response => response.json())
+            .then(data => initDashboard(data))
+            .catch(error => {
+                document.getElementById('loading').innerText = "حدث خطأ أثناء جلب البيانات.";
+                console.error('Error:', error);
+            });
     };
 
     function initDashboard(data) {
         rawData = data;
         document.getElementById('loading').style.display = 'none';
         document.getElementById('mainDashboard').style.display = 'block';
-        applyFilters(); // Render everything initially
+        applyFilters(); 
     }
 
     function applyFilters() {
@@ -289,10 +137,7 @@
                 matchDate = (rowDate >= sDate && rowDate <= eDate);
             }
 
-            if (emp !== 'الكل') {
-                matchEmp = (row.employee === emp);
-            }
-
+            if (emp !== 'الكل') { matchEmp = (row.employee === emp); }
             return matchDate && matchEmp;
         });
 
@@ -300,7 +145,6 @@
     }
 
     function updateDashboard() {
-        // 1. Calculate KPIs
         const totalOrders = filteredData.length;
         const totalRev = filteredData.reduce((sum, row) => sum + row.price, 0);
         
@@ -320,7 +164,6 @@
         document.getElementById('kpiTopPlatform').innerText = topPlatform;
         document.getElementById('kpiTopEmp').innerText = topEmp;
 
-        // 2. Render Table
         const tbody = document.querySelector('#dataTable tbody');
         tbody.innerHTML = '';
         filteredData.forEach(row => {
@@ -335,12 +178,10 @@
             tbody.appendChild(tr);
         });
 
-        // 3. Render Charts
         renderCharts(filteredData);
     }
 
     function renderCharts(data) {
-        // Prepare Bar Chart Data (Orders per Employee)
         const empData = {};
         const platformData = {};
 
@@ -349,77 +190,41 @@
             platformData[row.platform] = (platformData[row.platform] || 0) + 1;
         });
 
-        // Destroy old instances
         if (barChartInstance) barChartInstance.destroy();
         if (pieChartInstance) pieChartInstance.destroy();
 
-        // Bar Chart
         const ctxBar = document.getElementById('barChart').getContext('2d');
         barChartInstance = new Chart(ctxBar, {
             type: 'bar',
-            data: {
-                labels: Object.keys(empData),
-                datasets: [{
-                    label: 'عدد الطلبات',
-                    data: Object.values(empData),
-                    backgroundColor: '#1B2A47'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: { display: true, text: 'أداء الموظفين (حسب عدد الطلبات)' }
-                }
-            }
+            data: { labels: Object.keys(empData), datasets: [{ label: 'عدد الطلبات', data: Object.values(empData), backgroundColor: '#1B2A47' }] },
+            options: { responsive: true, plugins: { title: { display: true, text: 'أداء الموظفين (حسب عدد الطلبات)' } } }
         });
 
-        // Pie Chart
         const ctxPie = document.getElementById('pieChart').getContext('2d');
         pieChartInstance = new Chart(ctxPie, {
             type: 'doughnut',
-            data: {
-                labels: Object.keys(platformData),
-                datasets: [{
-                    data: Object.values(platformData),
-                    backgroundColor: ['#A05A2C', '#1B2A47', '#4A90E2', '#E0E0E0']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: { display: true, text: 'توزيع الطلبات على المنصات' }
-                }
-            }
+            data: { labels: Object.keys(platformData), datasets: [{ data: Object.values(platformData), backgroundColor: ['#A05A2C', '#1B2A47', '#4A90E2', '#E0E0E0'] }] },
+            options: { responsive: true, plugins: { title: { display: true, text: 'توزيع الطلبات على المنصات' } } }
         });
     }
 
     function exportCSV() {
-        let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // BOM for Arabic support
+        let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; 
         csvContent += "رقم الطلب,اسم الموظف,المنصة,السعر,التاريخ\n";
-        
         filteredData.forEach(row => {
             let d = new Date(row.date).toLocaleDateString('ar-EG');
             csvContent += `${row.orderId},${row.employee},${row.platform},${row.price},${d}\n`;
         });
-
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
         link.setAttribute("download", "سجل_الطلبات.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        document.body.appendChild(link); link.click(); document.body.removeChild(link);
     }
 
     function exportPDF() {
         const element = document.getElementById('dashboardContent');
-        const opt = {
-            margin:       10,
-            filename:     'تقرير_الطلبات.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
-        };
+        const opt = { margin: 10, filename: 'تقرير_الطلبات.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } };
         html2pdf().set(opt).from(element).save();
     }
 </script>
