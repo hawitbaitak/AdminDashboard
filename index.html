@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم الإدارة المتقدمة - مكاني</title>
+    <title>لوحة تحكم الإدارة المتقدمة - هوية بيتك</title>
     <link rel="icon" type="image/png" href="admin.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -104,21 +104,47 @@
         #loading { text-align: center; padding: 100px; font-size: 20px; color: var(--navy); font-weight: bold; }
         @media (max-width: 992px) { .charts-section { grid-template-columns: 1fr; } }
 
-        /* حماية عناصر التقرير من الانقسام في الطباعة (لا تؤثر على الشاشة) */
-        .kpi-card, .chart-container, .table-section, tr {
+        /* =========================================
+           تنسيقات مخصصة للطباعة وتصدير PDF (السر هنا)
+           ========================================= */
+        .pdf-mode-active {
+            background-color: white !important;
+        }
+        
+        .pdf-mode-active .controls-section {
+            display: none !important; /* إخفاء الفلاتر والأزرار في التقرير */
+        }
+        
+        /* جعل كل قسم في صفحة مستقلة وبشكل إطار نظيف */
+        .pdf-mode-active .charts-section,
+        .pdf-mode-active .table-section {
+            page-break-before: always !important;
+            break-before: page !important;
+            margin-top: 20px;
+        }
+
+        .pdf-mode-active .kpi-card, 
+        .pdf-mode-active .chart-container, 
+        .pdf-mode-active .table-section {
+            border: 2px solid #e2e8f0 !important;
+            box-shadow: none !important;
             page-break-inside: avoid !important;
             break-inside: avoid !important;
+        }
+
+        .pdf-mode-active tr {
+            page-break-inside: avoid !important;
         }
     </style>
 </head>
 <body>
 
-<div class="header-modern">
+<div class="header-modern" id="mainHeader">
     <div class="header-logo-title">
         <img src="logo1.png" alt="الشعار" onerror="this.style.display='none'">
         <div class="header-text">
             <h1>إدارة أداء المبيعات</h1>
-            <span>لوحة تحكم وتحليل بيانات مكاني</span>
+            <span>لوحة تحكم وتحليل بيانات هوية بيتك</span>
         </div>
     </div>
     <div class="header-user">
@@ -299,7 +325,6 @@
             tbody.innerHTML += `<tr><td>#${r.orderId}</td><td>${r.employee}</td><td>${getBadge(r.platform)}</td><td style="font-weight:bold;">${fmtMoney(r.price)}</td><td>${new Date(r.date).toLocaleDateString('ar-EG')}</td></tr>`;
         });
 
-        // الرسوم رجعت لإعداداتها الأصلية لمنع انهيار حجمها
         if(barChartInst) barChartInst.destroy();
         barChartInst = new Chart(document.getElementById('barChart'), { type: 'bar', data: { labels: Object.keys(empRev), datasets: [{ label: 'الإيرادات', data: Object.values(empRev), backgroundColor: '#0f172a', borderRadius: 4 }] }});
         
@@ -342,31 +367,27 @@
     }
 
     function exportPDF() {
-        // تحديد وإخفاء الأقسام غير المرغوبة في التقرير (الأزرار والتبويبات)
-        const filtersGroup = document.getElementById('filtersGroup');
-        const tabsGroup = document.getElementById('tabsGroup');
-        const empSelectGroup = document.getElementById('empSelectGroup');
+        // تحديد التاب المفتوح حالياً لتصديره
+        const activeTab = document.querySelector('.tab-content.active');
+        
+        // تفعيل وضع الـ PDF لإخفاء الأزرار وإضافة فواصل الصفحات
+        activeTab.classList.add('pdf-mode-active');
+        document.getElementById('mainHeader').classList.add('pdf-mode-active'); // إخفاء الهيدر لو حبيت
 
-        if(filtersGroup) filtersGroup.style.display = 'none';
-        if(tabsGroup) tabsGroup.style.display = 'none';
-        if(empSelectGroup && empSelectGroup.parentElement.classList.contains('active')) {
-            empSelectGroup.style.display = 'none';
-        }
-
-        const element = document.getElementById('dashboardContent');
         const opt = {
-            margin: 10,
-            filename: 'تقرير_المبيعات.pdf',
-            image: { type: 'jpeg', quality: 1 },
-            html2canvas: { scale: 3, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            margin:       [15, 15, 15, 15],
+            filename:     'تقرير_أداء_هوية_بيتك.pdf',
+            image:        { type: 'jpeg', quality: 1 },
+            html2canvas:  { scale: 3, useCORS: true, logging: false },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' },
+            pagebreak:    { mode: ['css', 'legacy'] }
         };
 
-        html2pdf().set(opt).from(element).save().then(() => {
-            // إرجاع الأزرار لطبيعتها فوراً بعد التحميل
-            if(filtersGroup) filtersGroup.style.display = 'flex';
-            if(tabsGroup) tabsGroup.style.display = 'flex';
-            if(empSelectGroup) empSelectGroup.style.display = 'flex';
+        // طباعة التاب النشط فقط
+        html2pdf().set(opt).from(activeTab).save().then(() => {
+            // إلغاء وضع الـ PDF بمجرد انتهاء التحميل لترجع الشاشة كما كانت
+            activeTab.classList.remove('pdf-mode-active');
+            document.getElementById('mainHeader').classList.remove('pdf-mode-active');
         });
     }
 </script>
